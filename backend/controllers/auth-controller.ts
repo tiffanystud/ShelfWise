@@ -53,4 +53,43 @@ export async function registerUser(context: any) {
 }
 
 
+export async function loginUser(context: any) {
 
+    const reqBody = await context.request.body();
+    const reqValue = await reqBody.value;
+    const email = reqValue.email;
+
+    const foundUser = userModelModule.getUserByEmail(email);
+    if (!foundUser) {
+        context.response.status = 401;
+        context.response.body = { error: "Unvalid email or password." };
+        return;
+    }
+
+    const validPassword = await authModule.comparePassword(reqValue.password, foundUser.password);
+    if (!validPassword) {
+        context.response.status = 401;
+        context.response.body = { error: "Unvalid email or password." };
+        return;
+    }
+
+    const payload = {
+        id: foundUser.id,
+        email: foundUser.email,
+        role: foundUser.role,
+        exp: authModule.getTokenExpiration(60)
+    }
+    const jwt = await authModule.generateJwtToken(payload);
+
+    context.response.status = 200;
+    context.response.body = {
+        message: "Sign in successful!",
+        token: jwt,
+        user: {
+          id: foundUser.id,
+          email: foundUser.email,
+          role: foundUser.role,
+        }
+      };
+
+}

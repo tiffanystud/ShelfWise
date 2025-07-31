@@ -46,7 +46,12 @@ export function getUserByUsername(username: string): User | null {
         "SELECT * FROM users WHERE username = ?",
         [username],
     )];
-    
+
+    if (result.length > 0) {
+        return result[0];
+      } else {
+        return null;
+      }          
 }
 
 // Get one user
@@ -58,6 +63,22 @@ export function getUserById(id: number): User | null {
     )]
 
     return foundUsers.length > 0 ? foundUsers[0] : null;
+}
+
+
+export async function updateUser(id: number, updates: { password?: string; role?: string }) {
+
+    if (!updates.password && !updates.role) {
+        
+        return
+    }
+    if (updates.password) {
+        //
+    }
+
+    if (updates.role) {
+
+    }
 }
 
 

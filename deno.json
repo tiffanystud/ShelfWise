@@ -3,6 +3,12 @@
     "@std/http": "jsr:@std/http@^1.0.20"
   },
   "compilerOptions": {
-    "lib": ["dom", "deno.ns"]
+    "lib": [
+      "dom",
+      "deno.ns"
+    ]
+  },
+  "tasks": {
+    "start": "deno run --allow-env --allow-net server.ts"
   }
 }
