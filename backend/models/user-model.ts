@@ -12,20 +12,6 @@ export interface User {
 }
 
 
-// Get a user by email
-export function getUserByEmail(email: string): User | null {
-
-    // Returns an array of obj, with the interface
-    const result = [...db.queryEntries<User>(
-        "SELECT * FROM users WHERE email = ?",
-        [email],
-    )];
-
-    return result.length > 0 ? result[0] : null;
-}
-
-
-
 // Create a new user
 export function createUser(
     // Takes an obj. as arg. 
@@ -41,6 +27,27 @@ export function createUser(
     return db.lastInsertRowId;
 }
 
+
+// Get a user by email
+export function getUserByEmail(email: string): User | null {
+
+    // Returns an array of obj, with the interface
+    const result = [...db.queryEntries<User>(
+        "SELECT * FROM users WHERE email = ?",
+        [email],
+    )];
+
+    return result.length > 0 ? result[0] : null;
+}
+
+export function getUserByUsername(username: string): User | null {
+    
+    const result = [...db.queryEntries<User>(
+        "SELECT * FROM users WHERE username = ?",
+        [username],
+    )];
+    
+}
 
 // Get one user
 export function getUserById(id: number): User | null {
