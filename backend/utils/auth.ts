@@ -9,11 +9,13 @@
 import * as bcrypt from "https://deno.land/x/bcrypt/mod.ts";
 import { create, getNumericDate, Header } from "https://deno.land/x/djwt/mod.ts";
 
+
 const jtwKey = Deno.env.get("JWT_SECRET")!;
 const header: Header = {
     alg: "HS256",
     typ: "JWT",
 }
+
 
 export async function hashPassword(password: string): Promise<string> {
     const hashed = await bcrypt.hash(password);
@@ -26,6 +28,7 @@ export async function comparePassword(inputPassword: string, hashedPassword: str
     return isMatch;
 }
 
+
 export function getTokenExpiration(minuteFromNow: number): number {
 
     const secondsInAMinute = 60;
@@ -35,10 +38,13 @@ export function getTokenExpiration(minuteFromNow: number): number {
     return expirationTimestamp
 }
 
+
 export async function generateJwtToken(payload: Record<string, any>): Promise<string> {
 
     const token = await create(header, payload, jtwKey);
     return token;
 }
+
+
 
 
