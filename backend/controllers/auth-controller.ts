@@ -1,5 +1,6 @@
 
-// backend7contollers/auth-controller.ts
+// backend/contollers/auth-controller.ts
+
 import * as userModelModule from "../models/user-model.ts";
 import * as authModule from "../utils/auth.ts";
 
@@ -13,7 +14,8 @@ import * as authModule from "../utils/auth.ts";
 
 */
 
-export async function registerUser(context: any) {
+
+export async function registerUserController(context: any) {
 
     const reqBody = await context.request.body();
     const reqValue = await reqBody.value;
@@ -52,8 +54,7 @@ export async function registerUser(context: any) {
 
 }
 
-
-export async function loginUser(context: any) {
+export async function loginUserController(context: any) {
 
     const reqBody = await context.request.body();
     const reqValue = await reqBody.value;
@@ -86,13 +87,51 @@ export async function loginUser(context: any) {
         message: "Sign in successful!",
         token: jwt,
         user: {
-          id: foundUser.id,
-          email: foundUser.email,
-          role: foundUser.role,
+            id: foundUser.id,
+            email: foundUser.email,
+            role: foundUser.role,
         }
-      };
+    };
 
 }
 
+export async function updateUserController(context: any) {
+
+    const authHeader = context.request.headers.get("Authorization");
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        context.response.status = 401;
+        context.response.body = { error: "Missing or invalid token" };
+        return;
+    }
+
+    const token = authHeader.replace("Bearer ", "");
+    let payload: { id: number; role: string; };
+
+    try {
+        payload = await authModule.verifyJwtToken(token);
+    } catch {
+        context.response.status = 401;
+        context.response.body = { error: "Invalid token" };
+        return;
+    }
+
+    const urlParts = new URL(context.request.url).pathname.split('/');
+    const userIdString = urlParts[urlParts.length - 1];
+    const currUserId = parseInt(userIdString);
+
+    if (payload.id !== currUserId && payload.role !== "admin") {
+        context.response.status = 403;
+        context.response.body = { error: "You can only update your own profile" };
+        return;
+    }
+
+    const reqBody = await context.request.body();
+    const updates = await reqBody.value;
+
+    await userModelModule.updateUser(currUserId, updates);
+
+    context.response.status = 200;
+    context.response.body = { message: "User updated successfully" };
+}
 
 
