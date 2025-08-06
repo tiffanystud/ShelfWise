@@ -23,7 +23,7 @@ CREATE TABLE stock_movements (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   product_id INTEGER,
   user_id INTEGER,
-  change INTEGER, -- + fo added, - for shipped
+  change INTEGER, -- + for added, - for shipped
   note TEXT,
   timestamp TEXT DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (product_id) REFERENCES products(id),

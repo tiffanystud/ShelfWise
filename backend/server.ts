@@ -27,45 +27,7 @@ async function handler(request: Request): Promise<Response> {
                 headers: { "Content-Type": "application/json" }
             })
         }
-
-
-        /* 
-                if (reqMethod === "POST") {
         
-                    if (reqPathname === "/api/test-register") {
-                        const context = { request, response };
-                        await registerUser(context);
-        
-                        return new Response(
-                            JSON.stringify(context.response.body),
-                            {
-                                status: context.response.status ?? 201,
-                                headers: { "Content-Type": "application/json" }
-                            }
-                        );
-                    }
-        
-                    if (reqPathname === "/api/login") {
-        
-                        const context = { request, response };
-                        await loginUser(context);
-        
-                        if (!context.response.status) {
-                            return new Response("Internal server error", { status: 500 });
-                        }
-        
-                        return new Response(
-                            JSON.stringify(context.response.body),
-                            {
-                                status: context.response.status,
-                                headers: { "Content-Type": "application/json" }
-                            }
-                        );
-        
-                    }
-        
-                } */
-
         return new Response("API endpoint not found", { status: 404 });
     }
 
