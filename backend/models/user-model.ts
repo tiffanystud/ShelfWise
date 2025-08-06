@@ -27,7 +27,6 @@ export function createUser(
     return db.lastInsertRowId;
 }
 
-
 // Get a user by email
 export function getUserByEmail(email: string): User | null {
 
@@ -65,19 +64,22 @@ export function getUserById(id: number): User | null {
     return foundUsers.length > 0 ? foundUsers[0] : null;
 }
 
-
 export async function updateUser(id: number, updates: { password?: string; role?: string }) {
 
     if (!updates.password && !updates.role) {
-        
-        return
+        return;
     }
+
     if (updates.password) {
-        //
+        db.query(
+            "UPDATE users SET password = ? WHERE id  = ?", [updates.password, id]
+        )
     }
 
     if (updates.role) {
-
+        db.query(
+            "UPDATE users SET role = ? WHERE id = ?", [updates.password, id]
+        )
     }
 }
 
