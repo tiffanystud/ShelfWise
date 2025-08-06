@@ -10,3 +10,8 @@ Appen fokuserar på att vara:
 - Säker (inloggning och olika användarroller)
 
 Målet är att bygga ett modernt men enkelt system som kan ersätta kalkylblad och manuella listor.
+
+// Min kodstruktur just nu:
+- Controllers: styr flödet
+- Models: kör mot datan
+- Utils: gör små saker som hash, token

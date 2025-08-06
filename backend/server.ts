@@ -1,6 +1,7 @@
-// backend/server.ts
+/* // backend/server.ts
 
 import { serveFile, serveDir } from "jsr:@std/http/file-server";
+import { serve } from "https://deno.land/std/http/server.ts";
 
 async function handler(request: Request): Promise<Response> {
     const url = new URL(request.url);
@@ -8,23 +9,24 @@ async function handler(request: Request): Promise<Response> {
 
 
     if (path === "/" || path === "/home") {
-        
+
         const response: Response = await serveFile(
-            request, "../frontend/index.html"); 
+            request, "../frontend/index.html");
         response.headers.set("content-type", "text/html");
-        
+
         return response;
-        
+
     } else {
-        
+
         const fileResponse: Response = await serveDir(
             request, {
-                fsRroot: "../frontend",
-            })
-        
+            fsRroot: "../frontend",
+        })
+
         return fileResponse;
     }
 }
 
-Deno.serve(handler);
+serve(handler);
 
+ */
