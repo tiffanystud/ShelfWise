@@ -12,7 +12,7 @@ export interface User {
 }
 
 
-// Create a new user
+// Create a new user, fr. auth-controller
 export function createUser(
     // Takes an obj. as arg. 
     user: { username: string; email: string; password: string; role?: string },
@@ -25,6 +25,17 @@ export function createUser(
 
     // Last added ID (the new users)
     return db.lastInsertRowId;
+}
+
+// Get one user, fr. auth-controller
+export function getUserById(id: number): User | null {
+
+    const foundUsers = [...db.queryEntries<User>(
+        "SELECT * FROM users WHERE id = ?",
+        [id],
+    )]
+
+    return foundUsers.length > 0 ? foundUsers[0] : null;
 }
 
 // Get a user by email
@@ -53,17 +64,6 @@ export function getUserByUsername(username: string): User | null {
       }          
 }
 
-// Get one user
-export function getUserById(id: number): User | null {
-
-    const foundUsers = [...db.queryEntries<User>(
-        "SELECT * FROM users WHERE id = ?",
-        [id],
-    )]
-
-    return foundUsers.length > 0 ? foundUsers[0] : null;
-}
-
 export async function updateUser(id: number, updates: { password?: string; role?: string }) {
 
     if (!updates.password && !updates.role) {
@@ -72,14 +72,16 @@ export async function updateUser(id: number, updates: { password?: string; role?
 
     if (updates.password) {
         db.query(
-            "UPDATE users SET password = ? WHERE id  = ?", [updates.password, id]
-        )
+            "UPDATE users SET password = ? WHERE id = ?", 
+            [updates.password, id]  
+          );
     }
 
     if (updates.role) {
         db.query(
-            "UPDATE users SET role = ? WHERE id = ?", [updates.password, id]
-        )
+            "UPDATE users SET role = ? WHERE id = ?", 
+            [updates.role, id] 
+          );
     }
 }
 
