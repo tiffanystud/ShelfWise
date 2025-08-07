@@ -15,7 +15,12 @@ export interface User {
 // Create a new user, fr. auth-controller
 export function createUser(
     // Takes an obj. as arg. 
-    user: { username: string; email: string; password: string; role?: string },
+    user: { 
+        username: string;
+        email: string; 
+        password: string; 
+        role?: string 
+    },
 ): number {
     const role = user.role ?? "user"; // Default
     db.query(
@@ -50,6 +55,7 @@ export function getUserByEmail(email: string): User | null {
     return result.length > 0 ? result[0] : null;
 }
 
+// Get a user by username
 export function getUserByUsername(username: string): User | null {
     
     const result = [...db.queryEntries<User>(
@@ -64,6 +70,7 @@ export function getUserByUsername(username: string): User | null {
       }          
 }
 
+// Update a user
 export async function updateUser(id: number, updates: { password?: string; role?: string }) {
 
     if (!updates.password && !updates.role) {
