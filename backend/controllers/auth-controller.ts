@@ -104,6 +104,8 @@ export async function updateUserController(context: any) {
     }
 
     const token = authHeader.replace("Bearer ", "");
+    
+    // Ska role stå som obl. här och ej updates?
     let payload: { id: number; role: string; };
 
     try {

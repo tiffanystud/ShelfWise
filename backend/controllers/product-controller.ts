@@ -20,7 +20,7 @@ export async function createProductController(context: any) {
         payload = await authModule.verifyJwtToken(token);
     } catch {
         context.response.status = 401;
-        context.response.boody = { error: "Invalid token" };
+        context.response.body = { error: "Invalid token" };
         return;
     }
 
@@ -30,8 +30,62 @@ export async function createProductController(context: any) {
         return;
     }
 
+    const reqBody = await context.request.body();
+    const productData = await reqBody.value();
+    const newProductId = productModel.createProduct(productData);
+
+    context.response.status = 200;
+    context.response.body = {
+        message: "Product created",
+        productId: newProductId
+    }
+
+    return;
+
+}
 
 
+export async function updateProductController(context: any) {
+
+    const authHeader = context.request.headers.get("Authorization");
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        context.response.status = 401;
+        context.response.body = { error: "Missing or invalid token" };
+        return;
+    }
+
+    const token = authHeader.replace("Bearer ", "");
+    let payload: { role: string; id: number };
+
+    // TODO: hämta produkt-id från context.params
+    try {
+        payload = await authModule.verifyJwtToken(token);
+    } catch {
+        context.response.status = 401;
+        context.response.body = { error: "Invalid token" }
+        return;
+    }
+
+    if (payload.role !== "admin") {
+        context.response.status = 403;
+        context.response.body = { error: "Forbidden: only admins can update products" }; return;
+    }
+
+    // TODO: hämta request body (nya värden)
+    const productId = context.params.id;
+    const reqBody = await context.request.body();
+    const updates = await reqBody.value;
+
+    const foundProduct = productModel.getProductbyId(Number(productId));
+    if (!foundProduct) {
+        context.response.status = 404;
+        context.response.body = { error: "Product not found" };
+        return;
+    }
+
+    productModel.updateProduct(Number(productId), updates);
+    context.response.status = 200;
+    context.response.body = { message: "Product updated" };
 }
 
 

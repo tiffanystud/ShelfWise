@@ -2,6 +2,7 @@
 // backend/models/product-model.ts
 
 import db from "../utils/database.ts"
+import * as authModule from "../utils/auth.ts";
 
 export interface Product {
     id: number,
@@ -27,7 +28,7 @@ export function createProduct(
 
     db.query(
         "INSERT INTO products (name, price, category, description, stock_quantity) VALUES (?, ?, ?, ?, ?)",
-        [product.name, product.price, product.category, product.description, product.stock_quantity]
+        [product.name, product.price, product.category, description, stock_quantity]
     );
 
     return db.lastInsertRowId
@@ -63,7 +64,8 @@ export function updateProduct( id: number, updates: {
         description?: string;
         stock_quantity?: number;
     }) {
-    if (
+    
+        if (
         updates.name === undefined &&
         updates.price === undefined &&
         updates.category === undefined &&
