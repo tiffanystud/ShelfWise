@@ -7,10 +7,11 @@
  exports usable data
 */
 
-import { DB } from "https://deno.land/x/sqlite/mod.ts";
+import { DB } from "https://deno.land/x/sqlite@v3.9.1/mod.ts"; 
 
 const db = new DB("shelfwise.db");
-const schema = await Deno.readTextFile("../models/schema.sql");
+const schema = await Deno.readTextFile(new URL("../models/schema.sql", import.meta.url));
+
 
 db.execute(schema);
 

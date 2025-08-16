@@ -18,6 +18,7 @@ async function handler(request: Request): Promise<Response> {
         let routeFunction = apiRoutes[apiRoute];
         let params: Record<string, string> = {};
 
+        // API endpoints with parameters
         if (!routeFunction) {
             for (const route in apiRoutes) {
                 const [routeMethod, routePath] = route.split(" ");

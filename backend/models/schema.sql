@@ -1,7 +1,7 @@
 
-// backend/models/schema.sql
+-- backend/models/schema.sql
 
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT NOT NULL UNIQUE,
     email TEXT NOT NULL UNIQUE,
@@ -10,7 +10,7 @@ CREATE TABLE users (
     created_at TEXT DEFAULT CURRENT_TIMESTAMP
 ); 
 
-CREATE TABLE products (
+CREATE TABLE IF NOT EXISTS products  (
     id INTEGER PRIMARY KEY AUTOINCREMENT, 
     name TEXT NOT NULL,
     price REAL,
@@ -19,7 +19,7 @@ CREATE TABLE products (
     stock_quantity INTEGER DEFAULT 0
 );
 
-CREATE TABLE stock_movements (
+CREATE TABLE IF NOT EXISTS stock_movements (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   product_id INTEGER,
   user_id INTEGER,
@@ -30,7 +30,7 @@ CREATE TABLE stock_movements (
   FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
-CREATE TABLE audit_log (
+CREATE TABLE IF NOT EXISTS audit_log (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   action TEXT NOT NULL,
   user_id INTEGER,
@@ -38,7 +38,7 @@ CREATE TABLE audit_log (
   FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
-CREATE TABLE event_log (
+CREATE TABLE IF NOT EXISTS event_log (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   event TEXT NOT NULL,
   method TEXT,
