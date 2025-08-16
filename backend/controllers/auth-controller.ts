@@ -16,12 +16,10 @@ import * as authModule from "../utils/auth.ts";
 
 export async function registerUserController(context: any) {
 
-    const reqBody = await context.request.body();
-    const reqValue = await reqBody.value;
-
-    const username = reqValue.username;
-    const email = reqValue.email;
-    const role = reqValue.role;
+    const reqBody = await context.request.json(); 
+    const username = reqBody.username;
+    const email = reqBody.email;
+    const role = reqBody.role;
 
     const existingUser = userModelModule.getUserByEmail(email);
     if (existingUser) {
@@ -37,7 +35,7 @@ export async function registerUserController(context: any) {
         return;
     }
 
-    const hasedPassword = await authModule.hashPassword(reqValue.password);
+    const hasedPassword = await authModule.hashPassword(reqBody.password);
     const newUserId = userModelModule.createUser({
         username,
         email,
@@ -55,9 +53,8 @@ export async function registerUserController(context: any) {
 
 export async function loginUserController(context: any) {
 
-    const reqBody = await context.request.body();
-    const reqValue = await reqBody.value;
-    const email = reqValue.email;
+    const reqBody = await context.request.json(); 
+    const email = reqBody.email;
 
     const foundUser = userModelModule.getUserByEmail(email);
     if (!foundUser) {
@@ -66,7 +63,7 @@ export async function loginUserController(context: any) {
         return;
     }
 
-    const validPassword = await authModule.comparePassword(reqValue.password, foundUser.password);
+    const validPassword = await authModule.comparePassword(reqBody.password, foundUser.password);
     if (!validPassword) {
         context.response.status = 401;
         context.response.body = { error: "Unvalid email or password." };
@@ -126,9 +123,7 @@ export async function updateUserController(context: any) {
         return;
     }
 
-    const reqBody = await context.request.body();
-    const updates = await reqBody.value;
-
+    const updates = await context.request.json();
     await userModelModule.updateUser(currUserId, updates);
 
     context.response.status = 200;
