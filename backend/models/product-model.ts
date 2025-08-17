@@ -2,6 +2,7 @@
 // backend/models/product-model.ts
 
 import db from "../utils/database.ts"
+import * as authModule from "../utils/auth.ts";
 
 export interface Product {
     id: number,
@@ -27,7 +28,7 @@ export function createProduct(
 
     db.query(
         "INSERT INTO products (name, price, category, description, stock_quantity) VALUES (?, ?, ?, ?, ?)",
-        [product.name, product.price, product.category, product.description, product.stock_quantity]
+        [product.name, product.price, product.category, description, stock_quantity]
     );
 
     return db.lastInsertRowId
@@ -55,14 +56,23 @@ export function getProductByCategory(category: string): Product[] {
     return result;
 }
 
+// Get all products
+export function getAllProducts(): Product[] {
+    const result = [...db.queryEntries<Product>(
+        "SELECT * FROM products"
+    )]
+    return result;
+}
+
 // Update a product
-export function updateProduct( id: number, updates: {
-        name?: string;
-        price?: number;
-        category?: string;
-        description?: string;
-        stock_quantity?: number;
-    }) {
+export function updateProduct(id: number, updates: {
+    name?: string;
+    price?: number;
+    category?: string;
+    description?: string;
+    stock_quantity?: number;
+}) {
+
     if (
         updates.name === undefined &&
         updates.price === undefined &&
@@ -94,6 +104,10 @@ export function updateProduct( id: number, updates: {
     }
 }
 
+// Delete a product
+export function deleteProduct(id: number): void {
+    db.query("DELETE FROM products WHERE id = ?", [id]);
+}
 
 
 

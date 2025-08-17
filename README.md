@@ -1,17 +1,12 @@
 # ShelfWise
 
-ShelfWise är en lagerhanteringsapp byggd med Deno, TypeScript och SQLite. 
+ShelfWise is a stock management app built with Deno, TypeScript, and SQLite.
 
-Här kan du se lagersaldo, lägga till nya produkter, uppdatera kvantiteter och följa hur lagret förändras över tid, i ett användarvänligt gränssnitt. 
+The goal is to create a modern, user-friendly system to replace spreadsheets and manual inventory tracking. Features like product management, real-time stock updates, and user roles are planned.
 
-Appen fokuserar på att vara: 
-- Lätt att använda
-- Tydlig (statistik och realtidsdata)
-- Säker (inloggning och olika användarroller)
+The project is still in development — many features are yet to be implemented.
 
-Målet är att bygga ett modernt men enkelt system som kan ersätta kalkylblad och manuella listor.
-
-// Min kodstruktur just nu:
-- Controllers: styr flödet
-- Models: kör mot datan
-- Utils: gör små saker som hash, token
+## Project Structure (Work in Progress)
+- **Controllers**: Handle app logic (e.g. authentication, product management)
+- **Models**: Communicate with the database
+- **Utils**: Helpers for tasks like JWT handling, hashing, etc.

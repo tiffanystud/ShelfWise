@@ -10,7 +10,15 @@ import * as bcrypt from "https://deno.land/x/bcrypt/mod.ts";
 import { create, Header, verify } from "https://deno.land/x/djwt/mod.ts";
 
 
-const jwtKey = Deno.env.get("JWT_SECRET")!;
+const jwtSecretString = Deno.env.get("JWT_SECRET")!;
+const jwtKey = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode(jwtSecretString),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign", "verify"]
+);
+
 const jwtHeader: Header = {
     alg: "HS256",
     typ: "JWT",
@@ -40,19 +48,18 @@ export function getTokenExpiration(minuteFromNow: number): number {
 
 
 export async function generateJwtToken(payload: Record<string, any>): Promise<string> {
-
     const token = await create(jwtHeader, payload, jwtKey);
     return token;
 }
 
-
 export async function verifyJwtToken(token: string): Promise<any> {
 
     try {
-        const payload = await verify(token, jwtKey, jwtHeader.alg); 
+        const payload = await verify(token, jwtKey, jwtHeader.alg);
         return payload;
 
     } catch (error) {
+        console.error(error);
         throw new Error("Invalid token.")
     }
 }
