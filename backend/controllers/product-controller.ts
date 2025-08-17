@@ -56,7 +56,6 @@ export async function updateProductController(context: any) {
     const token = authHeader.replace("Bearer ", "");
     let payload: { role: string; id: number };
 
-    // TODO: hämta produkt-id från context.params
     try {
         payload = await authModule.verifyJwtToken(token);
     } catch {
@@ -70,7 +69,6 @@ export async function updateProductController(context: any) {
         context.response.body = { error: "Forbidden: only admins can update products" }; return;
     }
 
-    // TODO: hämta request body (nya värden)
     const productId = context.params.id;
     const updates = await context.request.json();
 
@@ -84,6 +82,32 @@ export async function updateProductController(context: any) {
     productModel.updateProduct(Number(productId), updates);
     context.response.status = 200;
     context.response.body = { message: "Product updated" };
+}
+
+export async function getAllProductsController(context: any) {
+
+    const authHeader = context.request.headers.get("Authorization");
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        context.response.status = 401;
+        context.response.body = { error: "Missing or invalid token" };
+        return;
+    }
+
+    const token = authHeader.replace("Bearer ", "");
+    let payload: { role: string; id: number };
+
+    try {
+        payload = await authModule.verifyJwtToken(token);
+    } catch {
+        context.response.status = 401;
+        context.response.body = { error: "Invalid token" }
+        return;
+    }
+
+    const allProducts = productModel.getAllProducts();
+
+    context.response.status = 200;
+    context.response.body = { products: allProducts };
 }
 
 
