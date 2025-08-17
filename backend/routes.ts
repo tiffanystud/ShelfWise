@@ -11,8 +11,9 @@ export const apiRoutes = {
 
 
     // Products
-    "POST /api/product": productControllers.createProductController,
-    "PUT /api/product/:id": productControllers.updateProductController,
-    "GET /api/product": productControllers.getAllProductsController,
-    "DELETE /api/product/:id": productControllers.deleteProductController
+    "POST /api/products": productControllers.createProductController,
+    "PUT /api/products/:id": productControllers.updateProductController,
+    "GET /api/products": productControllers.getAllProductsController,
+    "GET /api/products/:id": productControllers.getProductByIdController,
+    "DELETE /api/products/:id": productControllers.deleteProductController
 };

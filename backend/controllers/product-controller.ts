@@ -67,6 +67,23 @@ export async function getAllProductsController(context: any) {
     context.response.body = { products: allProducts };
 }
 
+export async function getProductByIdController(context: any) {
+   
+    const user = await middlewareModule.authenticateToken(context);
+    if (!user) return;
+
+    const productId = Number(context.params.id);
+    const foundProduct = productModel.getProductbyId(productId);
+    if (!foundProduct) {
+        context.response.status = 404;
+        context.response.body = { error: "Product not found" };
+        return;
+    }
+    
+    context.response.status = 200;
+    context.response.body = { product: foundProduct };
+
+}
 
 export async function deleteProductController(context: any) {
 
