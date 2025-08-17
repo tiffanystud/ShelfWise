@@ -1,6 +1,6 @@
 
 // backend/server.ts
-
+import "https://deno.land/std@0.224.0/dotenv/load.ts";
 import { serveFile, serveDir } from "jsr:@std/http/file-server";
 import { serve } from "https://deno.land/std/http/server.ts";
 import { apiRoutes } from "./routes.ts";

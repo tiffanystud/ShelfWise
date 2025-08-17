@@ -12,5 +12,5 @@ export const apiRoutes = {
 
     // Products
     "POST /api/products": createProductController,
-    "PUT /api/products:id": updateProductController
+    "PUT /api/products/:id": updateProductController
 };

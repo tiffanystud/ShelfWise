@@ -30,8 +30,7 @@ export async function createProductController(context: any) {
         return;
     }
 
-    const reqBody = await context.request.body();
-    const productData = await reqBody.value();
+    const productData = await context.request.json();
     const newProductId = productModel.createProduct(productData);
 
     context.response.status = 200;
@@ -73,8 +72,7 @@ export async function updateProductController(context: any) {
 
     // TODO: hämta request body (nya värden)
     const productId = context.params.id;
-    const reqBody = await context.request.body();
-    const updates = await reqBody.value;
+    const updates = await context.request.json();
 
     const foundProduct = productModel.getProductbyId(Number(productId));
     if (!foundProduct) {
