@@ -8,7 +8,7 @@ export const apiRoutes = {
   
     // Users
     "POST /api/login": userControllers.loginUserController,
-    "POST /api/test-register": userControllers.registerUserController,
+    "POST /api/register": userControllers.registerUserController,
 
     // Products
     "POST /api/products": productControllers.createProductController,
