@@ -61,13 +61,23 @@ async function handler(request: Request): Promise<Response> {
         return new Response("API endpoint not found", { status: 404 });
     }
 
+
+    // TypeScript/React files
+    if (reqPathname.endsWith('.tsx') || reqPathname.endsWith('.ts')) {
+        const fileResponse = await serveFile(request, `./frontend${reqPathname}`);
+        fileResponse.headers.set('content-type', 'text/javascript');
+        return fileResponse;
+    }
+
+
+
     // Static files 
     if (reqPathname === "/" || reqPathname === "/home") {
-        const response: Response = await serveFile(request, "../public/index.html");
+        const response: Response = await serveFile(request, "./frontend/public/index.html");
         response.headers.set("content-type", "text/html");
         return response;
     } else {
-        const fileResponse: Response = await serveDir(request, { fsRoot: "../public" });
+        const fileResponse: Response = await serveDir(request, { fsRoot: "./frontend/public" });
         return fileResponse;
     }
 }
